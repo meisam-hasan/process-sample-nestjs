@@ -1,0 +1,51 @@
+version: "3.9"
+services:
+  process-postgres:
+    image: postgres
+    healthcheck:
+      test: "pg_isready -h db"
+      interval: 3s
+      timeout: 5s
+      retries: 5
+    container_name: process-pgdb
+    restart: always
+    ports:
+      - "5434:5432"
+    environment:
+      PGUSER: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - process-pgdata:/var/lib/postgresql/data
+  
+
+  process-pgadmin:
+    image: dpage/pgadmin4
+    container_name: process-pgadmin4-container
+    restart: always
+    ports:
+      - "8890:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@mail.com
+      PGADMIN_DEFAULT_PASSWORD: 1234
+    volumes:
+      - process-pgadmin-data:/var/lib/pgadmin
+  
+
+  process-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: process-app-container
+    ports:
+      - "3050:3000"
+    depends_on:
+      - process-postgres
+  
+    
+
+volumes:
+  process-pgdata:
+  process-pgadmin-data:
+    driver: local
