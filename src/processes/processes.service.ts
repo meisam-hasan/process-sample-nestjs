@@ -25,8 +25,8 @@ export class ProcessesService {
     );
   }
 
-  findAll() {
-    return `This action returns all processes`;
+  async findAll() {
+    return this.processRepository.findAllProcess();
   }
 
   async findOne(pid: number) {

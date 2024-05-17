@@ -1,15 +1,14 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from '@nestjs/typeorm';
 
 @Injectable()
 export class TypeOrmConfigService implements TypeOrmOptionsFactory {
-  
-      //private readonly config: ConfigService;
-    constructor( private config: ConfigService) {}
+  //private readonly config: ConfigService;
+  constructor(private config: ConfigService) {}
 
-    public createTypeOrmOptions(): TypeOrmModuleOptions {
-        console.log("Database host : " + this.config.get<string>('DATABASE_HOST'));
+  public createTypeOrmOptions(): TypeOrmModuleOptions {
+    console.log('Database host : ' + this.config.get<string>('DATABASE_HOST'));
     return {
       type: 'postgres',
       host: this.config.get<string>('DATABASE_HOST'),

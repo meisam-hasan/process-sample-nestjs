@@ -3,6 +3,8 @@ import { AutomapperProfile, InjectMapper } from '@automapper/nestjs';
 import { Injectable } from '@nestjs/common';
 import { CreateProcessDto } from 'src/dto/create-process.dto';
 import { ProcessDto } from 'src/dto/process.dto';
+import { ProcessDtoList } from 'src/dto/process.dto.list';
+import { ProcessList } from 'src/dto/process.list';
 import { ProcessLogDto } from 'src/dto/process.log.dto';
 import { ProcessEntity } from 'src/entities/process.entity';
 import { ProcessLogEntity } from 'src/entities/process.log.entity';
@@ -27,6 +29,7 @@ export class ProcessMapper extends AutomapperProfile {
         ProcessDto,
         extend(createProcessDtoMapper),
       );
+      createMap(mapper, ProcessList, ProcessDtoList);
     };
   }
 }

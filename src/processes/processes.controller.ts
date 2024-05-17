@@ -12,6 +12,8 @@ import { CreateProcessDto } from '../dto/create-process.dto';
 import { MapInterceptor } from '@automapper/nestjs';
 import { ProcessEntity } from 'src/entities/process.entity';
 import { ProcessDto } from 'src/dto/process.dto';
+import { ProcessList } from 'src/dto/process.list';
+import { ProcessDtoList } from 'src/dto/process.dto.list';
 
 @Controller()
 export class ProcessesController {
@@ -24,14 +26,16 @@ export class ProcessesController {
   }
 
   @Get('findAll')
-  @UseInterceptors(MapInterceptor(ProcessEntity, ProcessDto))
-  findAll() {
-    return this.processesService.findAll();
+  @UseInterceptors(MapInterceptor(ProcessList, ProcessDtoList))
+  async findAll() {
+    const list = new ProcessList();
+    list.processList = await this.processesService.findAll();
+    return list;
   }
 
   @Get('process/:pid')
   @UseInterceptors(MapInterceptor(ProcessEntity, ProcessDto))
-  findOne(@Param('pid') pid: number) {
+  async findOne(@Param('pid') pid: number) {
     return this.processesService.findOne(pid);
   }
 
